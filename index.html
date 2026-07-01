@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Matiks Solver — Upload a 6×6 Sudoku puzzle image and get the solution instantly with AI-powered OCR and an optimized solving algorithm.">
+    <title>Matiks Solver — 6×6 Sudoku Image Solver</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tesseract.js v5 (CDN) — handles its own Web Workers internally -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+    <!-- App Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Favicon (inline SVG) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- ── Header ── -->
+        <header class="app-header">
+            <h1 class="app-title">Matiks Solver</h1>
+            <p class="app-subtitle">Upload a 6×6 Sudoku image — solved in milliseconds</p>
+            <div id="ocr-status">
+                <span class="status-dot loading"></span> Loading OCR engine...
+            </div>
+        </header>
+
+        <!-- ── Progress Stepper ── -->
+        <nav class="progress-stepper" aria-label="Processing steps">
+            <div class="status-step" id="step-upload">
+                <span class="step-icon">1</span>
+                <span>Upload</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="status-step" id="step-process">
+                <span class="step-icon">2</span>
+                <span>Process</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="status-step" id="step-ocr">
+                <span class="step-icon">3</span>
+                <span>Read</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="status-step" id="step-solve">
+                <span class="step-icon">4</span>
+                <span>Solve</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="status-step" id="step-done">
+                <span class="step-icon">✓</span>
+                <span>Done</span>
+            </div>
+        </nav>
+
+        <!-- ── Progress Bar ── -->
+        <div class="progress-bar" id="progress-bar">
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <span class="progress-text" id="progress-text">Ready</span>
+        </div>
+
+        <!-- ── Upload Section ── -->
+        <section id="upload-section">
+            <div class="glass-card">
+                <div class="drop-zone" id="drop-zone">
+                    <div class="drop-zone-icon">📸</div>
+                    <div class="drop-zone-text">
+                        <strong>Drop your puzzle image here</strong> or click to browse
+                    </div>
+                    <div class="drop-zone-hint">Supports PNG, JPG, WebP • Max 10MB</div>
+                    <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp" hidden>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Preview & Editor Section ── -->
+        <section id="preview-section" class="hidden">
+            <div class="content-grid">
+
+                <!-- Left: Original Image -->
+                <div class="glass-card">
+                    <div class="section-title">Original Image</div>
+                    <div class="canvas-container">
+                        <canvas id="original-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Right: Grid Editor -->
+                <div class="glass-card">
+                    <div class="section-title">Detected Grid</div>
+                    <div class="grid-editor-wrapper" id="grid-editor">
+                        <table class="grid-table" id="grid-table"></table>
+                        
+                        <div class="btn-row">
+                            <button class="btn btn-primary" id="solve-btn">
+                                ⚡ Solve
+                            </button>
+                            <button class="btn btn-secondary" id="reset-btn">
+                                ↺ Reset
+                            </button>
+                            <button class="btn btn-success" id="download-btn" style="display: none;">
+                                ⬇ Download
+                            </button>
+                        </div>
+
+                        <!-- Performance Metrics -->
+                        <div class="metrics-panel" id="metrics-panel"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Result Section (Solution Overlay) ── -->
+        <section id="result-section" class="hidden">
+            <div class="glass-card" style="margin-top: 2rem;">
+                <div class="section-title">Solution Overlay</div>
+                <div class="canvas-container">
+                    <canvas id="result-canvas" style="display: none;"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ── Toast Notification ── -->
+    <div class="toast" id="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- ── Application Scripts (loaded in dependency order) ── -->
+    <script src="js/imageProcessor.js"></script>
+    <script src="js/gridDetector.js"></script>
+    <script src="js/ocrEngine.js"></script>
+    <script src="js/solver.js"></script>
+    <script src="js/overlay.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
