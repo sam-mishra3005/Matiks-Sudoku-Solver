@@ -30,12 +30,12 @@ class SolutionOverlay {
      */
     static render(displayCanvas, originalImage, gridCells, originalGrid, solvedGrid, uncertainCells = [], options = {}) {
         const {
-            solvedColor = '#00d2ff',      // Cyan for solved digits
+            solvedColor = '#d97757',      // Clay for solved digits
             givenColor = null,             // null = don't redraw given digits
-            uncertainColor = '#ff4757',    // Red for uncertain cells
-            strokeColor = '#000000',       // Dark outline
+            uncertainColor = '#c6613f',    // Clay Deep for uncertain cells
+            strokeColor = '#faf9f5',       // Ivory Light outline
             strokeWidth = 3,
-            fontFamily = "'Inter', 'Segoe UI', system-ui, sans-serif",
+            fontFamily = "'Lora', 'Georgia', serif",
             fontSizeRatio = 0.55,          // Font size relative to cell height
             showAnimation = true
         } = options;
@@ -78,7 +78,7 @@ class SolutionOverlay {
                     const centerY = cell.y + cell.h / 2;
 
                     // Semi-transparent background overlay for solved cells
-                    ctx.fillStyle = 'rgba(0, 210, 255, 0.08)';
+                    ctx.fillStyle = 'rgba(217, 119, 87, 0.08)';
                     ctx.fillRect(cell.x + 2, cell.y + 2, cell.w - 4, cell.h - 4);
 
                     // Draw the digit with stroke for readability
@@ -105,8 +105,8 @@ class SolutionOverlay {
                     ctx.strokeRect(cell.x + 1, cell.y + 1, cell.w - 2, cell.h - 2);
                     ctx.setLineDash([]);
 
-                    // Red overlay
-                    ctx.fillStyle = 'rgba(255, 71, 87, 0.15)';
+                    // Warm highlight overlay
+                    ctx.fillStyle = 'rgba(245, 227, 199, 0.4)';
                     ctx.fillRect(cell.x + 1, cell.y + 1, cell.w - 2, cell.h - 2);
                 }
             }
@@ -128,7 +128,7 @@ class SolutionOverlay {
         canvas.height = image.naturalHeight || image.height;
         ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-        ctx.strokeStyle = 'rgba(0, 255, 136, 0.7)';
+        ctx.strokeStyle = 'rgba(20, 20, 19, 0.7)';
         ctx.lineWidth = 2;
 
         // Draw horizontal lines
